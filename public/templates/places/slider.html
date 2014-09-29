@@ -1,0 +1,45 @@
+<div class="well well-sm">
+    <div id="myCarousel" class="carousel slide">
+        <!-- Carousel items -->
+        <div class="carousel-inner">
+                <div class="item active">
+                    <div class="row">
+                       <div class="col-sm-3"><center><a class="img-responsive img-rounded img-thumbnail" style="height:160px; width:160px"><i class="fa fa-picture-o fa-5x" style="padding-top:30px;"></i></a></center></div>
+                       <div class="col-sm-3"><center><a class="img-responsive img-rounded img-thumbnail" style="height:160px; width:160px"><i class="fa fa-picture-o fa-5x" style="padding-top:30px;"></i></a></center></div>
+                       <div class="col-sm-3"><center><a class="img-responsive img-rounded img-thumbnail" style="height:160px; width:160px"><i class="fa fa-picture-o fa-5x" style="padding-top:30px;"></i></a></center></div>
+                       <div class="col-sm-3"><center><a class="img-responsive img-rounded img-thumbnail" style="height:160px; width:160px"><i class="fa fa-picture-o fa-5x" style="padding-top:30px;"></i></a></center></div>
+                   </div>
+                </div>
+           
+        </div>
+        <!--/carousel-inner-->
+        <a class="left carousel-control" href="#myCarousel" data-slide="prev"><i
+            class="fa fa-caret-left  fa-3x "></i></a> <a
+            class="right carousel-control" href="#myCarousel" data-slide="next"><i
+            class="fa fa-caret-right  fa-3x"></i></a>
+    </div>
+    <!--/myCarousel-->
+</div>
+<!--/well-->
+
+<div class="modal fade" id="photo_<?php echo $photo->trail_photo_id?>"
+    tabindex="-1" role="dialog"
+    aria-labelledby="photo_<?php echo $photo->trail_photo_id?>"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Uploaded by <strong><?php echo $photo->name?> (22)</strong>  on <?php echo date("m/d/Y", $photo->trail_photo_create)?> <span
+                    class="pull-right"><?php echo $this->TrailRate($photo->trail_photo_rate)?></span>
+            </div>
+            <div class="modal-body">
+                Image
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">
+                    <strong>Close</strong>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

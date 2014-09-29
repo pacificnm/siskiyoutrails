@@ -1,0 +1,89 @@
+<div class="flashMessenger"></div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<button class="btn btn-success btn-xs" id="addAttributeGroupBtn">
+			<span class="glyphicon glyphicon-plus"></span>
+		</button>
+		<strong>Attribute Groups</strong> <span class="badge pull-right"></span>
+	</div>
+	<table class="table table-striped table-bordered" id="attributeGroupTbl">
+		<thead>
+			<tr class="warning">
+				<th>Attribute Group Id</th>
+				<th>Attribute Group Name</th>
+				<th>Collection</th>
+				<th>Created By</th>
+				<th>Created</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+        <% attributeGroups.forEach(function (model){ %>
+        <tr>
+            <td><%= model.get('attribute_group_id') %></td>
+            <td><a href="#" data-id="<%= model.get('attribute_group_id') %>" id="showAttributeGroupItems"><%= model.get('attribute_group_name') %></a></td>
+            <td><%= model.get('collection_type') %></td>
+            <td><%= model.get('attribute_group_create_by') %></td>
+            <td><%= model.get('attribute_group_create') %></td>
+            <td class="text-right">
+                
+                <button class="btn btn-warning btn-sm" 
+                        data-id="<%= model.get('attribute_group_id') %>" 
+                        id="editAttributeGroupBtn"><span class="glyphicon glyphicon-pencil"></span></button> 
+                    <button class="btn btn-danger btn-sm" 
+                        data-id="<%= model.get('attribute_group_id') %>" 
+                        id="deleteAttributeGroupBtn"> <span class="glyphicon glyphicon-remove-circle"></span></button>
+            </td>
+        </tr>
+        <% }) %>
+		</tbody>
+	</table>
+</div>
+
+<!-- addAttributeTypeModal -->
+<div class="modal fade " id="addAttributeGroupModal" tabindex="-1"
+    role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">
+                    <i class="fa fa-plus fa-fw"></i> Create Attribute Group
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="attributeGroupFrm">
+                    <div class="form-group">
+                        <label for="attribute_type_value" class="col-sm-4 control-label">Attribute
+                            Group Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="attribute_group_name"
+                                name="attribute_group_name" value="">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="collection_type" class="col-sm-4 control-label">Attribute
+                            Group Name</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" id="collection_type">
+		                        <option value="trail">Trail</option>
+		                        <option value="place">Place</option>
+		                        <option value="forest">Forest</option>
+		                        <option value="trip">Trip</option>
+		                        <option value="event">Event</option>
+		                        <option value="member">Member</option>
+		                    </select>
+                        </div>
+                    </div>
+                    <input type="hidden" name="frm_attribute_group_id" id="frm_attribute_group_id" >
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary"
+                    id="saveAttributeGroupBtn">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

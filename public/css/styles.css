@@ -1,0 +1,63 @@
+@import url("bootstrap.min.css");
+@import url("font-awesome.min.css");
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+  background-color: #FCFFF5;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+}
+
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+body > .container {
+  padding: 60px 15px 0;
+}
+.container .text-muted {
+  margin: 20px 0;
+}
+
+.footer > .container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.tabbable {
+    border-bottom: 1px solid #ccc;
+}
+
+.nav-tabs {
+    
+}
+
+.tab-content {
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+}
+
+.carousel-control {
+    padding-top: 8%;
+    width: 5%;
+}
+
+.datepicker {z-index: 1151 !important;}
+
+code {
+  font-size: 80%;
+}

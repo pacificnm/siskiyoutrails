@@ -1,0 +1,40 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>Browse Forests</strong> <span class="badge pull-right">
+           <%= forests.length %>
+        </span>
+    </div>
+    
+    <% if(forests.length == 0) { %>
+        <div class="panel-body">
+        <div class="alert alert-info">
+            <p>Did not find any forests</p>
+        </div>
+    </div>
+    <% } else { %>
+    
+    
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tbody>
+                <% forests.forEach(function (model){ %>
+                <tr>
+                    <td class="col-md-2 col-lg-2">
+                        <i class="fa fa-picture-o fa-4x"></i>
+                    </td>
+                    <td><a href="#forests/<%= model.get('forest_slug') %>"
+                        data-toggle="tooltip" data-placement="top" title="View Forest"><strong>
+                                <%= model.get('forest_name') %>
+                        </strong></a><br /> <span class="text-muted">
+                            <%= model.get('forest_city') %> <%= model.get('forest_state') %>
+                    </span></td>
+                    <td></td>
+                    <td>forest_rate</td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        Pagination
+    </div>
+    <% } %>
+</div>

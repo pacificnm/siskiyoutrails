@@ -1,0 +1,40 @@
+<div class="container">
+	<h4>Forests</h4>
+	<hr />
+	<div class="row">
+        <div class="col-md-9 col-lg-8"><%= listForestTpl %></div>
+        <div class="col-md-3 col-lg-4">
+            <%= filterForestTpl %>
+            <hr />
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <iframe class="container col-md-12 thumbnail" height="300"
+                        frameborder="0" src="http://www.mappingsupport.com/p/gmap4.php"></iframe>
+                    <br /> <a data-toggle="modal" data-target="#largeMapModal" class="btn btn-primary"><strong>Large Map</strong></a>
+                </div>
+            </div>      
+            
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade bs-example-modal-lg" id="largeMapModal" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 class="modal-title" id="myModalLabel">Large Map</h4>
+            </div>
+            <div class="modal-body" style="height:540px">
+                
+                    <iframe class="container col-md-12 thumbnail" height="500" frameborder="0" src="http://www.mappingsupport.com/p/gmap4.php"></iframe>
+            
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-lg"
+                    data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

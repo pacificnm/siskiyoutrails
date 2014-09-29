@@ -1,0 +1,26 @@
+<table class="table table-striped table-bordered">
+	<thead>
+		<tr class="warning">
+			<th>Account Id</th>
+			<th>Account Name</th>
+			<th>Account Email</th>
+			<th>Account Admin</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+	 <% accounts.forEach(function (model){ %>
+	 	<tr>
+	 		<td><%= model.get('account_id') %></td>
+	 		<td><%= model.get('account_name') %></td>
+	 		<td><%= model.get('account_email') %></td>
+	 		<td><%= model.get('account_admin') %></td>
+	 		<td class="text-right">
+	 			<buton class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></buton>
+	 			<buton class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle"></span></buton>
+	 		</td>
+	 	</tr>
+	 <% }); %>
+	</tbody>
+</table>
+

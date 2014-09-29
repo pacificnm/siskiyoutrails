@@ -1,0 +1,52 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<strong>Browse Trails</strong> <span class="badge pull-right">
+			<%= totalItemCount %>
+		</span>
+	</div>
+	
+	
+	<% if(trails.length == 0) { %>
+	   <div class="panel-body">
+	        <div class="alert alert-info">
+	            <p>Did not find any trails</p>
+	        </div>
+        </div>
+	<% } else { %>
+	
+		<div class="table-responsive">
+			<table class="table table-hover">
+				<tbody>
+				<% trails.forEach(function (model){ %>
+					<tr>
+						<td class="col-md-2 col-lg-2">
+							<i class="fa fa-picture-o fa-4x"></i>
+						</td>
+						<td><a href="#trails/<%= model.get('trail_slug') %>"
+							data-toggle="tooltip" data-placement="top" title="View Trail"><strong>
+									<%= model.get('trail_name') %>
+							</strong></a><br /> 
+							<span class="text-muted">
+								<% if(model.get('trail_city') != 'Unknown') { %>
+									<%= model.get('trail_city') %> <%= model.get('trail_state') %> <%= model.get('trail_county') %>
+								<% } else { %>
+								     Unknown Location
+								<% } %>
+						    </span>
+						</td>
+						<td>
+							<%= model.get('trail_dificulty') %> <%= model.get('trail_distance') %> mi / <%= model.get('trail_duration') %> hrs<br />
+							<span class="text-muted">
+							  <a href="#forests/<%= model.get('trail_forest_slug') %>"><%= model.get('trail_forest') %></a>
+							</span>
+	                    </td>
+						<td><%= model.get('trail_type') %></td>
+						<td>trail_rate</td>
+					</tr>
+				<% }); %>
+				</tbody>
+			</table>
+			Pagination
+		</div>
+	<% } %>
+</div>

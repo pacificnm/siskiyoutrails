@@ -1,0 +1,148 @@
+<div class="container">
+        <h4>View Place</h4>
+    <hr />
+<div class="row">
+        <div class="col-md-9 col-lg-8">
+            <%= sliderTpl %>
+
+            <section id="PlaceOverview">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Overview</div>
+                    <div class="panel-body">
+
+                        <!-- If no overview -->
+                        <div class="alert alert-warning">
+                            <p>
+                                There is no Overview for this Place. You can be the first to
+                                provide the Place Overview for Place <strong>Place_name</strong>.
+                            </p>
+                        </div>
+
+                        <!-- Buttons -->
+                        <a href="#" type="button" class="btn btn-primary"
+                            id="createPlaceOverview"> <i class="fa fa-align-left fa-fw"></i>
+                            <strong>Write Overview</strong>
+                        </a> <a href="#" type="button" class="btn btn-primary"
+                            id="uploadPlacePhoto"> <i class="fa fa-picture-o fa-fw"></i>
+                            <strong>Upload Photo</strong>
+                        </a> 
+                        <a href="#" type="button" class="btn btn-primary"
+                            id="writePlaceReview"> <i class="fa fa-comment-o fa-fw"></i>
+                            <strong>Write Review</strong>
+                        </a>
+
+                        <div class="btn-group pull-right">
+                            <button type="button" class="btn btn-primary dropdown-toggle"
+                                data-toggle="dropdown">
+                                <strong>More</strong> <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#" id="editPlaceDetails"><i
+                                        class="fa fa-pencil fa-fw"></i> Edit Place Details</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#"><i class="fa fa-pencil fa-fw"
+                                        id="editPlaceOverview"></i> Edit Place Overview</a></li>
+                                <li><a href="#" id="reportPlace"><i
+                                        class="fa fa-frown-o fa-fw"></i> Report Place</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#" id="markPlaceCompleted"><i
+                                        class="fa fa-check-square fa-fw"></i> Mark Visited</a></li>
+                                <li><a href="#" id="addPlaceToFavs"><i
+                                        class="fa fa-heart-o fa-fw"></i> Add To Favorites</a></li>
+                                <li><a href="#" id="addPlaceToTrip"><i
+                                        class="fa fa-road fa-fw"></i> Add To Trip</a></li>
+                                <li><a href="#" id="addPlaceResource"><i
+                                        class="fa fa-anchor fa-fw"></i> Add Resource</a>
+                            </ul>
+                        </div>
+                        <!-- End Buttons -->
+                    </div>
+                </div>
+            </section>
+            <section id="tabs"><%= tabs %></section>
+        </div>
+        <div class="col-md-3 col-lg-4">
+            <section id="sectionPlaceMap">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <iframe class="container col-md-12 thumbnail" height="300"
+                            src="http://www.mappingsupport.com/p/gmap4.php?"></iframe>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a data-toggle="tooltip" data-placement="top" role="button"
+                                    title="" href="http://www.mappingsupport.com/p/gmap4.php"
+                                    class="btn btn-primary btn-sm" target="new"><i
+                                    class="fa fa-desktop"></i> <strong>Full Screen</strong></a> <a
+                                    data-toggle="tooltip" data-placement="top" role="button"
+                                    title="Google Earth KML File" href="/files/"
+                                    class="btn btn-primary btn-sm"><i class="fa fa-globe"></i>
+                                    <strong>KML</strong></a> <a data-toggle="tooltip"
+                                    data-placement="top" role="button"
+                                    title="GPX File For GPS Devices" href="/files/"
+                                    class="btn btn-primary btn-sm"><i class="fa fa-mobile"></i>
+                                    <strong>GPX</strong></a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sectionPlaceDetails">
+                <div class="well">
+                    <h4>
+                        Place Information 
+                    </h4>
+                    <div class="row">
+                        <div class="col-md-4 text-primary">Type</div>
+                        <div class="col-md-8">Place_detail_type</div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4 text-primary">Season</div>
+                        <div class="col-md-8">Place_detail_season</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 text-primary">Usage</div>
+                        <div class="col-md-8">Place_detail_usage</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 text-primary">Animals</div>
+                        <div class="col-md-8">Place_detail_animals</div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-12">This Place is in your Favorites</div>
+                    </div>
+
+                    <hr />
+
+                    
+                    <h4>
+                        Visited <span class="pull-right badge">0</span>
+                    </h4>
+
+                    <div class="alert alert-info">No one has visited this
+                        Place.</div>
+                    <div class="row">
+                        <div class="col-md-3 ">
+                            <a href="#" class="thumbnail"><span class="fa fa-user fa-3x"></span></a>
+                        </div>
+                    </div>
+                    <a href="#"><strong>All</strong></a>
+
+                    <hr />
+                    <h4>Browse Nearby</h4>
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="#Places/new_slug">Place_name</a>
+                            <span class="pull-right badge">Place Ino</span>
+                        </li>
+                    </ul>
+
+                    
+            </section>
+
+        </div>
+    </div>
+</div>

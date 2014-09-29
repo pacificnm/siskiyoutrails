@@ -1,0 +1,8 @@
+ <% attributeGroupItems.forEach(function (model){ %>
+	<div class="form-group">
+		<div class="checkbox">
+			<label> <%= model.get('attribute_type_value') %> 
+			<input type="checkbox" value="<%= model.get('attribute_type_id') %>" <% if(model.get('attribute_value') == 1) { %> checked <% } %>></label>
+		</div>
+	</div>
+<% }) %>

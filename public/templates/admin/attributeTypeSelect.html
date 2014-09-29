@@ -1,0 +1,10 @@
+<div class="form-group">
+	<label for="collection_type" class="col-sm-4 control-label">Attribute</label>
+	<div class="col-sm-8">
+		<select class="form-control" id="attribute_type_id">
+           <% attributeType.forEach(function (model){ %>
+            <option value="<%= model.get('attribute_type_id') %>"><%= model.get('attribute_type_value') %></option>
+           <% }) %>
+		</select>
+	</div>
+</div>

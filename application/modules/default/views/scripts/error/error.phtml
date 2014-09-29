@@ -1,0 +1,26 @@
+<h3 class="text-danger">
+	<?php echo $this->message ?>
+</h3>
+<?php if (isset($this->exception)): ?>
+<div class="row alert alert-danger">
+	<div class="col-md-12">
+		<h4>Exception information</h4>
+		<pre>
+			<?php echo $this->exception->getMessage() ?>
+		</pre>
+	</div>
+	<div class="col-md-12">
+
+		<h4>Stack trace</h4>
+		<pre class="pre-scrollable">
+			<?php echo $this->exception->getTraceAsString() ?>
+		</pre>
+	</div>
+	<div class="col-md-12">
+		<h4>Request Parameters</h4>
+		<pre>
+			<?php echo $this->escape(var_export($this->request->getParams(), true)) ?>
+		</pre>
+	</div>
+</div>
+<?php endif ?>

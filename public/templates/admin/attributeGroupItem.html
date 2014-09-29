@@ -1,0 +1,63 @@
+<div class="flashMessenger"></div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<button class="btn btn-success btn-xs" id="addAttributeGroupItemBtn">
+			<span class="glyphicon glyphicon-plus"></span>
+		</button>
+		<strong>Attribute Group Items</strong> <span class="badge pull-right"></span>
+	</div>
+	<table class="table table-striped table-bordered"
+		id="attributeGroupTbl">
+		<thead>
+			<tr class="warning">
+				<th>Id</th>
+				<th>Group Id</th>
+				<th>Group Name</th>
+				<th>Collection</th>
+				<th>Tpe Id</th>
+				<th>Type Value</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+        <% attributeGroupItems.forEach(function (model){ %>
+            <tr>
+                <td><%= model.get('attribute_group_item_id') %></td>
+                <td><%= model.get('attribute_group_id') %></td>
+                <td><%= model.get('attribute_group_name') %></td>
+                <td><%= model.get('collection_type') %></td>
+                <td><%= model.get('attribute_type_id') %></td>
+                <td><%= model.get('attribute_type_value') %></td>
+                <td></td>
+            </tr>
+        <% }) %>
+		</tbody>
+	</table>
+</div>
+
+<!-- addAttributeTypeModal -->
+<div class="modal fade " id="addAttributeGroupItemModal" tabindex="-1"
+    role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">
+                    <i class="fa fa-plus fa-fw"></i> Create Attribute Group Item For <%= attributeGroupName %>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="attributeGroupItemFrm">
+                    
+                    <section id="attributeTypeSelect"></section>
+                    
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary"
+                    id="saveAttributeGroupItemBtn">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

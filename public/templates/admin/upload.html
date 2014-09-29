@@ -1,0 +1,47 @@
+<div class="flashMessenger"></div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<strong>Upload File And Create Collection</strong>
+	</div>
+	<div class="panel-body">
+		<form class="form-horizontal" id="uploadFileFrm">
+
+			<div class="form-group">
+				<label for="" class="col-sm-4 control-label">Collection Type</label>
+				<div class="col-sm-8">
+					<select class="form-control" id="collection_type">
+						<option value="trail">Trail</option>
+						<option value="place">Place</option>
+						<option value="forest">Forest</option>
+						<option value="trip">Trip</option>
+						<option value="event">Event</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="" class="col-sm-4 control-label">File</label>
+				<div class="col-sm-8">
+				    <input type="file" id="fileupload" name="files[]" multiple class="btn btn-success"/>
+				    <br />
+					<div class="progress" id="progress">
+						<div class="progress-bar" role="progressbar" aria-valuenow="60"
+							aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+							<span class="sr-only">0% Complete</span>
+						</div>
+					</div>
+                    
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" class="btn btn-default">Save</button>
+				</div>
+			</div>
+
+		</form>
+		<p>File must be a valid KML file with all the correct fields for
+			the specified collection type.</p>
+
+	</div>
+</div>
