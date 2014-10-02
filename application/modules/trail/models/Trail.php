@@ -1,7 +1,7 @@
 <?php
 class Trail_Model_Trail extends Application_Model_Model
 {
-
+	
 	/**
 	 *
 	 * @var unknown
@@ -61,6 +61,43 @@ class Trail_Model_Trail extends Application_Model_Model
 				
 			return $models;
 		}
+	}
+	
+	/**
+	 * 
+	 * @param unknown_type $search
+	 * @param unknown_type $limit
+	 */
+	public function nearby($search, $limit=5)
+	{
+		$select = $this->getSelect();
+		
+		$cacheId = null;
+		
+		if(array_key_exists('filterTrailId', $search)) {
+			$select->where('trail.trail_id = ?', $search['filterTrailId']);
+		}
+		
+		if(array_key_exists('filterTrailSlug', $search)) {
+			$select->where('trail.trail_slug = ?', $search['filterTrailSlug']);
+		}
+		
+		
+		$trail = $this->get(array('filterTrailId' => $search['filterTrailId']));
+		
+		$trailId = $search['filterTrailId'];
+		$centerLat = $trail[0]->trail_lat;
+		$centerLng = $trail[0]->trail_lon;
+		
+		$sql = "SELECT *, ( 3959 * acos( cos( radians({$centerLat}) ) * cos( radians( trail_lat ) ) * cos( radians(  trail_lon ) - radians({$centerLng}) ) + sin( radians({$centerLat}) ) * sin( radians( trail_lat ) ) ) )
+		AS search_distance FROM trail HAVING search_distance < 5
+		AND trail.trail_id != '{$trailId}'
+		ORDER BY search_distance LIMIT 0 , {$limit}";
+		 
+		$stmt = $this->getTable()->getDefaultAdapter()->query($sql);
+
+		$rowset = $stmt->fetchAll();
+		return $rowset;
 	}
 
 	/**

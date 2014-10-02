@@ -11,4 +11,9 @@ class Application_Model_Controller extends Zend_Controller_Action
 	
 		return $model;
 	}
+	
+	public function getIpAddress()
+	{
+		return '127.0.0.1';
+	}
 }

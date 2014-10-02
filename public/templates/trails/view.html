@@ -24,11 +24,13 @@
 						</a> <a href="#" type="button" class="btn btn-primary"
 							id="uploadTrailTrack"> <i class="fa fa-map-marker fa-fw"></i>
 							<strong>Upload Tracks</strong>
-						</a> <a href="#" type="button" class="btn btn-primary"
-							id="writeTrailReview"> <i class="fa fa-comment-o fa-fw"></i>
-							<strong>Write Review</strong>
-						</a>
-
+						</a> 
+						<% if(trail.get('can_review') == 1) { %>
+							<a href="#" type="button" class="btn btn-primary" id="writeTrailReview"> 
+							    <i class="fa fa-comment-o fa-fw"></i>
+								<strong>Write Review</strong>
+							</a>
+                        <% } %>
                          
 						<div class="btn-group pull-right">
 							<button type="button" class="btn btn-primary dropdown-toggle"
@@ -57,8 +59,11 @@
 								    <i class="fa fa-frown-o fa-fw"></i> Report Trail</a>
 								</li>
 								<li class="divider"></li>
-								<li><a href="#" id="markTrailCompleted">
-								    <i class="fa fa-check-square fa-fw"></i> Mark Completed</a></li>
+								<% if(trail.get('can_mark_complete') == 1) { %>
+								    <li><a href="#" id="markTrailCompleted">
+								        <i class="fa fa-check-square fa-fw"></i> Mark Completed</a>
+								    </li>
+								<% } %>
 								<li><a href="#" id="addTrailToFavs">
 								    <i class="fa fa-heart-o fa-fw"></i> Add To Favorites</a></li>
 								<li><a href="#" id="addTrailToTrip">
@@ -80,8 +85,10 @@
 			<section id="sectiontrailMap">
 				<div class="panel panel-default">
 					<div class="panel-body">
+					<!-- 
 						<iframe class="container col-md-12 thumbnail" height="300"
 							src="http://www.mappingsupport.com/p/gmap4.php?"></iframe>
+					-->
 						<div class="row">
 							<div class="col-md-12">
 								<a data-toggle="tooltip" data-placement="top" role="button"
@@ -175,34 +182,25 @@
                          <% }) %>
                         </div>
                     </div>
+                    
                     <hr />
                     <% } %>
+                    
+                    <% if(localStorage.getItem('accountId')) { %>
 					<div class="row">
 						<div class="col-md-12">This trail is in your Favorites</div>
+						<% if(trail.get('can_mark_complete') == 0) { %>
+						  <div class="col-md-12">You completed this trail on <%= trail.get('completed_date') %></div>
+						<% } else { %>
+						  <div class="col-md-12">You have not completed this trail</div>
+						<% } %>
 					</div>
 					<hr />
-
+                    <% } %>
+                    <section id="trailCompletedSection"></section>
 					
-					<h4>
-						Completed <span class="pull-right badge">0</span>
-					</h4>
-
-					<div class="alert alert-info">No one has completed this
-						trail.</div>
-					<div class="row">
-						<div class="col-md-3 ">
-							<a href="#" class="thumbnail"><span class="fa fa-user fa-3x"></span></a>
-						</div>
-					</div>
-					<a href="#"><strong>All</strong></a>
-
-					<hr />
-					<h4>Browse Nearby</h4>
-					<ul class="list-group">
-                        <li class="list-group-item"><a href="#trails/new_slug">trail_name</a>
-							<span class="pull-right badge">Trail Ino</span>
-						</li>
-					</ul>
+					<section id="trailNearbySection"></section>
+					
 
 					
 			</section>

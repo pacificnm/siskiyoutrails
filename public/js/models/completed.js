@@ -6,7 +6,6 @@ define([
 	idAttribute: "completed_id",
 	
 	defaults: {
-		'completed_id': 0,
 		'collection_type': 'trail',
 		'collection_id': 0,
 		'completed_by': 0,

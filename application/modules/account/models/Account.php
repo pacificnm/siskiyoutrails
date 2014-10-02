@@ -24,12 +24,19 @@ class Account_Model_Account extends Application_Model_Model
 		if(array_key_exists('filterAccountEmail', $search)) {
 			$select->where('account.account_email =?', $search['filterAccountEmail']);
 		}
+		
 		if(array_key_exists('filterAccountPassword', $search)) {
 			$select->where('account.account_password =?', $search['filterAccountPassword']);
 		}
+		
 		if(array_key_exists('filterAccountId', $search)) {
 			$select->where('account.account_id =?', $search['filterAccountId']);
 		}
+		
+		if(array_key_exists('filterAccountToken', $search)) {
+			$select->where('account.account_token =?', $search['filterAccountToken']);
+		}
+		
 		
 		if($pagination) {
 			$paginator = Zend_Paginator::factory($select);

@@ -11,6 +11,10 @@ define([
     el: '#trailList',
     initialize: function (options) {
     	this.options = options || {};
+
+    	this.options.account_email = localStorage.getItem('accountEmail');
+    	this.options.account_token = localStorage.getItem('accountToken');
+    	
     	this.trails = new TrailCollection(this.options);   	
     	this.listenTo(this.trails, 'add', this.render);
 	    this.listenTo(this.trails, 'change', this.render);

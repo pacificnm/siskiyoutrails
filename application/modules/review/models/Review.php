@@ -21,11 +21,16 @@ class Review_Model_Review extends Application_Model_Model
 		
 		$cacheId = null;	
 		
-		if(array_key_exists('filterForestId', $search)) {
-			$select->where('forest.forest_id =?', $search['filterForestId']);
+		if(array_key_exists('filterCollectionId', $search)) {
+			$select->where('review.collection_id = ?', $search['filterCollectionId']);
 		}
-		if(array_key_exists('filterForestSlug', $search)) {
-			$select->where('forest.forest_slug =?', $search['filterForestSlug']);
+		
+		if(array_key_exists('filterCollectionType', $search)) {
+			$select->where('review.collection_type = ?', $search['filterCollectionType']);
+		}
+		
+		if(array_key_exists('filterAccountId', $search)) {
+			$select->where('review.account_id = ?', $search['filterAccountId']);
 		}
 		
 		$select->joinLeft('account', 'review.account_id = account.account_id');

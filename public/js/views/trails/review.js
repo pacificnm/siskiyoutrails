@@ -11,6 +11,8 @@ define([
     el: '#trailReviewsTab',
     initialize: function (options) {
     	this.options = options || {};
+    	this.options.account_email = localStorage.getItem('accountEmail');
+    	this.options.account_token = localStorage.getItem('accountToken');
     	this.reviews = new ReviewCollection(this.options);   	
     	this.listenTo(this.reviews, 'add', this.render);
 	    this.listenTo(this.reviews, 'change', this.render);
@@ -41,7 +43,6 @@ define([
     	var that = this;
     	var reviewId = $("#review_id").val(); 
     	
-    	console.log(reviewId);
     	
     	$('#WriteReviewModal').modal('toggle');
     	$('#WriteReviewModal').on('hidden.bs.modal', function (e) {
@@ -50,6 +51,9 @@ define([
 	    		model.save({
 	    			review_id:reviewId,
 	    			account_id: localStorage.getItem('accountId'),
+	    			account_email: localStorage.getItem('accountEmail'),
+	    			account_token: localStorage.getItem('accountToken'),
+	    			account_name: localStorage.getItem('accountName'),
 	    			collection_type: 'trail',
 	    			collection_id: that.options.collection_id,
 	    			review_text: $("#review_text").val(),
@@ -67,7 +71,10 @@ define([
 	    			review_text: $("#review_text").val(),
 	    			review_date: $("#review_date").val(),
 	    			review_rate: $('input[name=review_rate]:checked', '#trailReviewFrm').val(),
+	    			can_edit_review:1
 	    		});
+	    		// hide button
+	    		$("#writeTrailReview").hide();
 	    	}
     	});
     	console.log('saved review');
@@ -76,7 +83,6 @@ define([
     
     
     render: function () {
-    	console.log('review rendered');
     	var compiledTemplate = _.template(ReviewTpl, {reviews:this.reviews, trailName:this.options.trailName});
 		$(this.el).html(compiledTemplate);
 		

@@ -19,36 +19,54 @@ class Trail_IndexController extends Application_Model_Rest
 	 */
 	public function indexAction()
 	{
-
-		$page = $this->getParam('page', 1);
+		// get account
+		$account = $this->getActiveAccount();
 		
-		$items = $this->getModel('Trail_Model_Trail')->get($this->_getFilter(), true, $page);
+		// get page
+		$page = $this->getParam('page', 1);
+	
+		// get trails	
+		$models = $this->getModel('Trail_Model_Trail')->get($this->_getFilter(), true, $page);
+		
 		$data = array();
-		foreach($items as $item) {
-			$dataItem = array();
-			$dataItem['trail_id'] = $item->trail_id;
-			$dataItem['trail_name'] = $item->trail_name;
-			$dataItem['trail_slug'] = $item->trail_slug;
-			$dataItem['trail_dificulty'] = $this->getAttribute(13, $item->trail_id, 'Unknown');
-			$dataItem['trail_distance'] = $this->getAttribute(14, $item->trail_id, '0');
-			$dataItem['trail_duration'] = $this->getAttribute(15, $item->trail_id, '0');
-			$dataItem['trail_type'] = $this->getAttribute(1, $item->trail_id, 'Hiking');
-			$dataItem['trail_city'] = $this->getAttribute(6, $item->trail_id, 'Unknown');
-			$dataItem['trail_state'] = $this->getAttribute(7, $item->trail_id, 'Unknown');
-			$dataItem['trail_county'] = $this->getAttribute(8, $item->trail_id, 'Unknown');
+		
+		foreach($models as $model) {
+			$item = array();
+			$item['trail_id'] = $model->trail_id;
+			$item['trail_name'] = $model->trail_name;
+			$item['trail_slug'] = $model->trail_slug;
+			$item['trail_dificulty'] = $this->getAttribute(13, 'trail', $model->trail_id, 'Unknown');
+			$item['trail_distance'] = $this->getAttribute(14, 'trail', $model->trail_id, '0');
+			$item['trail_duration'] = $this->getAttribute(15, 'trail', $model->trail_id, '0');
+			$item['trail_type'] = $this->getAttribute(1, 'trail', $model->trail_id, 'Hiking');
+			$item['trail_city'] = $this->getAttribute(6, 'trail', $model->trail_id, 'Unknown');
+			$item['trail_state'] = $this->getAttribute(7, 'trail', $model->trail_id, 'Unknown');
+			$item['trail_county'] = $this->getAttribute(8, 'trail', $model->trail_id, 'Unknown');
 			
-			$forest = $this->getModel('Forest_Model_Forest')->get(array('filterForestSlug' => $this->getAttribute(34, $item->trail_id, 'None')));
+			// get forest
+			$forest = $this->getModel('Forest_Model_Forest')->get(array(
+					'filterForestSlug' => $this->getAttribute(34, 'trail', $model->trail_id, 'None'))
+			);
 			if(count($forest) !=0) {
-				$dataItem['trail_forest'] = $forest[0]->forest_name;
-				$dataItem['trail_forest_slug'] = $forest[0]->forest_slug;
+				$item['trail_forest'] = $forest[0]->forest_name;
+				$item['trail_forest_slug'] = $forest[0]->forest_slug;
 			}
 			
-			$data[] = $dataItem;
+			$item['request_account_admin'] = $account['request_account_admin'];
+			$item['request_account_email'] = $account['request_account_email'];
+			$item['request_account_id'] = $account['request_account_id'];
+			$item['request_account_ip'] = $account['request_account_ip'];
+			$item['request_account_name'] = $account['request_account_name'];
+			$item['request_account_time'] = $account['request_account_time'];
+			$item['request_account_token'] = $account['request_account_token'];
+			
+			$data[] = $item;
 		}
 
-		$this->view->totalItemCount = $items->getTotalItemCount();
-		$this->view->totalPages = $items->getPages()->pageCount;
-		$this->view->pageRange = $items->getPageRange();
+		
+		$this->view->totalItemCount = $models->getTotalItemCount();
+		$this->view->totalPages = $models->getPages()->pageCount;
+		$this->view->pageRange = $models->getPageRange();
 		$this->view->data = $data;
 		$this->_response->ok();
 
@@ -62,45 +80,85 @@ class Trail_IndexController extends Application_Model_Rest
 	public function getAction()
 	{
 
+		// get account
+		$account = $this->getActiveAccount();
 		
-		
-		$pagination = $this->getModel('Trail_Model_Trail')->get($this->_getFilter(), false, null);
+		// get trails
+		$models = $this->getModel('Trail_Model_Trail')->get($this->_getFilter(), false, null);
 		
 		$data = array();
-		foreach($pagination as $item) {
+		foreach($models as $model) {
 			
-			$dataItem = array();
-			$dataItem['trail_id'] = $item->trail_id;
-			$dataItem['trail_name'] = $item->trail_name;
-			$dataItem['trail_slug'] = $item->trail_slug;
-			$dataItem['trail_overview'] = $item->trail_overview;
-			$dataItem['trail_type'] = $this->getAttribute(1, $item->trail_id, 'Hiking');
-			$dataItem['trail_dificulty'] = $this->getAttribute(13, $item->trail_id, 'Unknown');
-			$dataItem['trail_distance'] = $this->getAttribute(14, $item->trail_id, '0');
-			$dataItem['trail_duration'] = $this->getAttribute(15, $item->trail_id, '0');
-			$dataItem['trail_elevation_gain'] = $this->getAttribute(2, $item->trail_id, '0');
-			$dataItem['trail_season'] = $this->getAttribute(3, $item->trail_id, 'Unknown');
-			$dataItem['trail_usage'] = $this->getAttribute(4, $item->trail_id, 'Unknown');
-			$dataItem['trail_animals'] = $this->getAttribute(5, $item->trail_id, 'Unknown');
-			$dataItem['trail_water'] = $this->getAttribute(10, $item->trail_id, 'Unknown');
-			$dataItem['trail_city'] = $this->getAttribute(6, $item->trail_id, 'Unknown');
-			$dataItem['trail_state'] = $this->getAttribute(7, $item->trail_id, 'Unknown');
-			$dataItem['trail_county'] = $this->getAttribute(8, $item->trail_id, 'Unknown');
-			$dataItem['trail_restrictions'] = $this->getAttribute(51, $item->trail_id, 'None');
-			$dataItem['trail_features'] = $this->_getAttributeGroups(1, $item->trail_id);
-			$dataItem['trail_activities'] = $this->_getAttributeGroups(2, $item->trail_id);
-			$dataItem['trail_good_for'] = $this->_getAttributeGroups(3,$item->trail_id);
+			$item = array();
+			$item['trail_id'] = $model->trail_id;
+			$item['trail_name'] = $model->trail_name;
+			$item['trail_slug'] = $model->trail_slug;
+			$item['trail_overview'] = $model->trail_overview;
+			$item['trail_type'] = $this->getAttribute(1, 'trail', $model->trail_id, 'Hiking');
+			$item['trail_dificulty'] = $this->getAttribute(13, 'trail',  $model->trail_id, 'Unknown');
+			$item['trail_distance'] = $this->getAttribute(14, 'trail', $model->trail_id, '0');
+			$item['trail_duration'] = $this->getAttribute(15, 'trail', $model->trail_id, '0');
+			$item['trail_elevation_gain'] = $this->getAttribute(2, 'trail', $model->trail_id, '0');
+			$item['trail_season'] = $this->getAttribute(3, 'trail', $model->trail_id, 'Unknown');
+			$item['trail_usage'] = $this->getAttribute(4, 'trail', $model->trail_id, 'Unknown');
+			$item['trail_animals'] = $this->getAttribute(5, 'trail', $model->trail_id, 'Unknown');
+			$item['trail_water'] = $this->getAttribute(10, 'trail', $model->trail_id, 'Unknown');
+			$item['trail_city'] = $this->getAttribute(6, 'trail', $model->trail_id, 'Unknown');
+			$item['trail_state'] = $this->getAttribute(7, 'trail', $model->trail_id, 'Unknown');
+			$item['trail_county'] = $this->getAttribute(8, 'trail', $model->trail_id, 'Unknown');
+			$item['trail_restrictions'] = $this->getAttribute(51, 'trail', $model->trail_id, 'None');
+			$item['trail_features'] = $this->_getAttributeGroups(1, 'trail', $model->trail_id);
+			$item['trail_activities'] = $this->_getAttributeGroups(2, 'trail', $model->trail_id);
+			$item['trail_good_for'] = $this->_getAttributeGroups(3,'trail', $model->trail_id);
 			
-			$forest = $this->getModel('Forest_Model_Forest')->get(array('filterForestSlug' => $this->getAttribute(34, $item->trail_id, 'None')));
+			// get forests
+			$forest = $this->getModel('Forest_Model_Forest')->get(array(
+					'filterForestSlug' => $this->getAttribute(34, 'trail', $model->trail_id, 'None'))
+			);
 			if(count($forest) !=0) {
-				$dataItem['trail_forest'] = $forest[0]->forest_name;
-				$dataItem['trail_forest_slug'] = $forest[0]->forest_slug;
+				$item['trail_forest'] = $forest[0]->forest_name;
+				$item['trail_forest_slug'] = $forest[0]->forest_slug;
 			}
-			$data[] = $dataItem;
+			
+			// if we have an acount see if we can do stuff
+			if(count($account['request_account_id']) > 0) {
+				
+				// can review
+				$review = $this->getModel('Review_Model_Review')->get(array(
+						'filterCollectionType' => 'trail',
+						'filterCollectionId' => $model->trail_id,
+						'filterAccountId' => $account['request_account_id']
+						));
+				if(count($review) == 0) {
+					$item['can_review'] = 1;
+				} else {
+					$item['can_review'] = 0;
+				}
+				
+				// can add completed
+				$completed = $this->getModel('Completed_Model_Completed')->get(array(
+						'filterCollectionType' => 'trail', 
+						'filterCollectionId' => $model->trail_id,
+						'filterAccountId' => $account['request_account_id']
+						));
+				if(count($completed) == 0) {
+					$item['can_mark_complete'] = 1; 
+				} else {
+					$item['can_mark_complete'] = 0;
+					$item['completed_date'] = date("m/d/Y", $completed[0]->completed_date);
+				}
+			}
+			
+			$item['request_account_admin'] = $account['request_account_admin'];
+			$item['request_account_email'] = $account['request_account_email'];
+			$item['request_account_id'] = $account['request_account_id'];
+			$item['request_account_name'] = $account['request_account_name'];
+			$item['request_account_time'] = $account['request_account_time'];
+			$item['request_account_token'] = $account['request_account_token'];
+			
+			$data[] = $item;
 			
 		}
-		
-		
 		$this->view->data = $data;
 		$this->_response->ok();
 	}
@@ -239,66 +297,7 @@ class Trail_IndexController extends Application_Model_Rest
 		return $search;
 	}
 	
-	private function slug($text)
-	{
-		$text = preg_replace("/[^A-Za-z0-9 ]/", " ", strtolower($text));
-		$text = preg_replace('/[\s\W]+/', "-", trim($text));
 	
-		return $text;
-	}
-	
-	/**
-	 * 
-	 * @param int $attributeTypeId The attribute type id
-	 * @param string $attributeValue The attribute value
-	 * @param unknown_type $trailId The trail id
-	 * @param unknown_type $accountId The account id of the user setting the attribute
-	 * @return int the attribute id
-	 */
-	private function setAttribute($attributeTypeId, $attributeValue, $trailId, $accountId)
-	{
-		$attribute = $this->getModel('Attribute_Model_Attribute')->get(
-				array('filterCollectionType' => 'trail',
-						'filterCollectionId' => $trailId,
-						'filterAttributeTypeId' => $attributeTypeId
-				));
-		if(count($attribute) == 0) {
-			$data = array(
-					'attribute_value' => $attributeValue,
-					'collection_type' => 'trail',
-					'collection_id' => $trailId,
-					'attribute_type_id' => $attributeTypeId,
-					'attribute_create_date' => time(),
-					'attribute_create_by' => $accountId);
-			$attributeId = $this->getModel('Attribute_Model_Attribute')->create($data);
-			return $attributeId;
-		} else {
-			$data = array('attribute_value' => $attributeValue);
-			$this->getModel('Attribute_Model_Attribute')->update($attribute[0]->attribute_id, $data);
-			return $attribute[0]->attribute_id;
-		}
-	}
-	
-	/**
-	 * 
-	 * @param unknown_type $attributeId
-	 * @param unknown_type $trailId
-	 * @param unknown_type $default
-	 */
-	private function getAttribute($attributeId, $trailId, $default)
-	{
-		$attributeValue = $this->getModel('Attribute_Model_Attribute')->get(array(
-				'filterCollectionType' => 'trail',
-				'filterCollectionId' => $trailId,
-				'filterAttributeTypeId' => $attributeId
-		));
-		if(count($attributeValue) < 1) {
-			$attributeValue = $default;
-		} else {
-			$attributeValue = $attributeValue[0]->attribute_value;
-		}
-		return $attributeValue;
-	}
 	
 	private function _getAttributeGroups($groupId, $trailId)
 	{
@@ -309,12 +308,12 @@ class Trail_IndexController extends Application_Model_Rest
 					'filterTrailId' => $trailId
 					));
 		foreach ($groups as $group) {
-			$item = array();
+			$model = array();
 			if($group->attribute_value > 0) {
-				$item['attribute_type_value'] = $group->attribute_type_value;
-				$item['attribute_type_id'] = $group->attribute_type_id;
-				$item['attribute_id'] = $group->attribute_id;
-				$data[] = $item;
+				$model['attribute_type_value'] = $group->attribute_type_value;
+				$model['attribute_type_id'] = $group->attribute_type_id;
+				$model['attribute_id'] = $group->attribute_id;
+				$data[] = $model;
 			}
 		}
 		return $data;

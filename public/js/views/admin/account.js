@@ -10,6 +10,7 @@ define([
     
     intialize: function () {
     	this.account = new AccountCollection({account_email:localStorage.getItem('accountEmail'),account_token:localStorage.getItem('accountToken') });
+    	
     	this.accounts = new AccountCollection({account_email:localStorage.getItem('accountEmail'),account_token:localStorage.getItem('accountToken') });
     	
     	this.listenTo(this.accounts, 'add', this.render);

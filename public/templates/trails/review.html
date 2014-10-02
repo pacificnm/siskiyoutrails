@@ -12,7 +12,9 @@
 			      <div class="media">
 			         <span class="pull-left"><i class="fa fa-user fa-5x thumbnail"></i>
 			             <br />
+			             <% if(model.get('can_edit_review') == 1) { %>
 			             <button class="btn btn-primary btn-sm" data-id="<%= model.get('review_id') %>" id="editReviewBtn">Edit</button>
+			             <% } %>
 			         </span>
 			          <div class="media-body">
 			               <p class="media-heading">

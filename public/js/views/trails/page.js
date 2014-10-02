@@ -12,8 +12,6 @@ define([
     el: '#main',
     initialize: function (options) {
     	this.options = options || {};
-    	
-	    
 	    
     },
     

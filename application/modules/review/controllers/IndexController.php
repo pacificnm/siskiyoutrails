@@ -19,8 +19,48 @@ class Review_IndexController extends Application_Model_Rest
 	 */
 	public function indexAction()
 	{
-
-		$data = $this->getModel('Review_Model_Review')->get($this->_getFilter())->toArray();
+		// get account
+		$account = $this->getActiveAccount();
+		
+		// get reviews
+		$models = $this->getModel('Review_Model_Review')->get($this->_getFilter());
+		
+		$data = array();
+		
+		// set up return
+		foreach ($models as $model) {
+			$item['review_id'] = $model->review_id;
+			$item['collection_type'] = $model->collection_type;
+			$item['collection_id'] = $model->collection_id;
+			$item['review_text'] = $model->review_text;
+			$item['review_date'] = date("m/d/Y", $model->review_date);
+			$item['review_rate'] = $model->review_rate;$model['account_id'] = $model->account_id;
+			$item['account_name'] = $model->account_name;
+			$item['account_completed'] = $model->account_completed;
+			$item['account_review'] = $model->account_review;
+			$item['account_score'] = $model->account_score;
+			$item['account_create'] = date("m/d/Y", $model->account_create);
+			$item['account_admin'] = $model->account_admin;
+			
+			if(count($account) > 0) {
+				if($account['request_account_id'] == $model->account_id) {
+					$item['can_edit_review'] = 1;
+				} else {
+					$item['can_edit_review'] = 0;
+				}
+			} else {
+				$item['can_edit_review'] = 3;
+			}
+			$item['request_account_admin'] = $account['request_account_admin'];
+			$item['request_account_email'] = $account['request_account_email'];
+			$item['request_account_id'] = $account['request_account_id'];
+			$item['request_account_name'] = $account['request_account_name'];
+			$item['request_account_time'] = $account['request_account_time'];
+			$item['request_account_token'] = $account['request_account_token'];
+			$data[] = $item;
+		}
+		
+		// log request
 		
 		$this->view->data = $data;
 		$this->_response->ok();
@@ -35,9 +75,44 @@ class Review_IndexController extends Application_Model_Rest
 	 */
 	public function getAction()
 	{
-
-
-		$data = $this->getModel('Review_Model_Review')->get($this->_getFilter())->toArray();
+		// get account
+		$account = $this->getActiveAccount();
+		
+		// get reviews
+		$models = $this->getModel('Review_Model_Review')->get($this->_getFilter());
+		
+		$data = array();
+		
+		foreach ($models as $model) {
+			$item['review_id'] = $model->review_id;
+			$item['collection_type'] = $model->collection_type;
+			$item['collection_id'] = $model->collection_id;
+			$item['review_text'] = $model->review_text;
+			$item['review_date'] = date("m/d/Y", $model->review_date);
+			$item['review_rate'] = $model->review_rate;
+			$item['account_id'] = $model->account_id;
+			$item['account_name'] = $model->account_name;
+			$item['account_email'] = $model->account_email;
+			$item['account_create'] = date("m/d/Y", $model->account_create);
+			if(count($account) > 0) {
+				if($account['account_id'] == $model->account_id) {
+					$item['can_edit_review'] = 1;
+				} else {
+					$item['can_edit_review'] = 0;
+				}
+			} else {
+				$item['can_edit_review'] = 3;
+			}
+			$item['request_account_admin'] = $account['request_account_admin'];
+			$item['request_account_email'] = $account['request_account_email'];
+			$item['request_account_id'] = $account['request_account_id'];
+			$item['request_account_ip'] = $account['request_account_ip'];
+			$item['request_account_name'] = $account['request_account_name'];
+			$item['request_account_time'] = $account['request_account_time'];
+			$item['request_account_token'] = $account['request_account_token'];
+			$data[] = $item;
+		}
+		
 		
 		$this->view->data = $data;
 		$this->_response->ok();
@@ -155,12 +230,12 @@ class Review_IndexController extends Application_Model_Rest
 	{
 		$search = array();
 
-		if($this->getParam('account_id')) {
-			$search['filterForestId'] = $this->getParam('forest_id');
+		if($this->getParam('collection_id')) {
+			$search['filterCollectionId'] = $this->getParam('collection_id');
 		}
 
-		if($this->getParam('forest_slug')) {
-			$search['filterForestSlug'] = $this->getParam('forest_slug');
+		if($this->getParam('collection_type')) {
+			$search['filterCollectionType'] = $this->getParam('collection_type');
 		}
 
 		return $search;
@@ -198,57 +273,4 @@ class Review_IndexController extends Application_Model_Rest
 		return true;
 	}
 	
-	
-	/**
-	 *
-	 * @param int $attributeTypeId The attribute type id
-	 * @param string $attributeValue The attribute value
-	 * @param unknown_type $trailId The trail id
-	 * @param unknown_type $accountId The account id of the user setting the attribute
-	 * @return int the attribute id
-	 */
-	private function setAttribute($attributeTypeId, $attributeValue, $forestId, $accountId)
-	{
-		$attribute = $this->getModel('Attribute_Model_Attribute')->get(
-				array('filterCollectionType' => 'forest',
-						'filterCollectionId' => $forestId,
-						'filterAttributeTypeId' => $attributeTypeId
-				));
-		if(count($attribute) == 0) {
-			$data = array(
-					'attribute_value' => $attributeValue,
-					'collection_type' => 'forest',
-					'collection_id' => $forestId,
-					'attribute_type_id' => $attributeTypeId,
-					'attribute_create_date' => time(),
-					'attribute_create_by' => $accountId);
-			$attributeId = $this->getModel('Attribute_Model_Attribute')->create($data);
-			return $attributeId;
-		} else {
-			$data = array('attribute_value' => $attributeValue);
-			$this->getModel('Attribute_Model_Attribute')->update($attribute[0]->attribute_id, $data);
-			return $attribute[0]->attribute_id;
-		}
-	}
-	
-	/**
-	 *
-	 * @param unknown_type $attributeId
-	 * @param unknown_type $trailId
-	 * @param unknown_type $default
-	 */
-	private function getAttribute($attributeId, $forestId, $default)
-	{
-		$attributeValue = $this->getModel('Attribute_Model_Attribute')->get(array(
-				'filterCollectionType' => 'forest',
-				'filterCollectionId' => $forestId,
-				'filterAttributeTypeId' => $attributeId
-		));
-		if(count($attributeValue) < 1) {
-			$attributeValue = $default;
-		} else {
-			$attributeValue = $attributeValue[0]->attribute_value;
-		}
-		return $attributeValue;
-	}
 }

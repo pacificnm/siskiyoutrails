@@ -31,10 +31,10 @@ class Forest_IndexController extends Application_Model_Rest
 			$dataItem['forest_overview'] = $forest->forest_overview;
 			$dataItem['forest_create_date'] = date("m/d/Y", $forest->forest_create_date);
 			$dataItem['forest_create_by'] = $forest->forest_create_by;
-			$dataItem['forest_street'] = $this->getAttribute(53, $forest->forest_id, 'Unknown');
-			$dataItem['forest_city'] = $this->getAttribute(6, $forest->forest_id, 'Unknown');
-			$dataItem['forest_state'] = $this->getAttribute(7, $forest->forest_id, 'Unknown');
-			$dataItem['forest_postal'] = $this->getAttribute(54, $forest->forest_id, 'Unknown');
+			$dataItem['forest_street'] = $this->getAttribute(53, 'forest', $forest->forest_id, 'Unknown');
+			$dataItem['forest_city'] = $this->getAttribute(6, 'forest', $forest->forest_id, 'Unknown');
+			$dataItem['forest_state'] = $this->getAttribute(7, 'forest', $forest->forest_id, 'Unknown');
+			$dataItem['forest_postal'] = $this->getAttribute(54, 'forest', $forest->forest_id, 'Unknown');
 			$data[] = $dataItem;
 		}
 		
@@ -64,10 +64,10 @@ class Forest_IndexController extends Application_Model_Rest
 			$dataItem['forest_overview'] = $forest->forest_overview;
 			$dataItem['forest_create_date'] = date("m/d/Y", $forest->forest_create_date);
 			$dataItem['forest_create_by'] = $forest->forest_create_by;
-			$dataItem['forest_street'] = $this->getAttribute(53, $forest->forest_id, 'Unknown');
-			$dataItem['forest_city'] = $this->getAttribute(6, $forest->forest_id, 'Unknown');
-			$dataItem['forest_state'] = $this->getAttribute(7, $forest->forest_id, 'Unknown');
-			$dataItem['forest_postal'] = $this->getAttribute(54, $forest->forest_id, 'Unknown');
+			$dataItem['forest_street'] = $this->getAttribute(53, 'forest', $forest->forest_id, 'Unknown');
+			$dataItem['forest_city'] = $this->getAttribute(6, 'forest',$forest->forest_id, 'Unknown');
+			$dataItem['forest_state'] = $this->getAttribute(7, 'forest',$forest->forest_id, 'Unknown');
+			$dataItem['forest_postal'] = $this->getAttribute(54, 'forest',$forest->forest_id, 'Unknown');
 			$data[] = $dataItem;
 		}
 		
@@ -191,64 +191,5 @@ class Forest_IndexController extends Application_Model_Rest
 		return $search;
 	}
 	
-	private function slug($text)
-	{
-		$text = preg_replace("/[^A-Za-z0-9 ]/", " ", strtolower($text));
-		$text = preg_replace('/[\s\W]+/', "-", trim($text));
 	
-		return $text;
-	}
-	
-	/**
-	 *
-	 * @param int $attributeTypeId The attribute type id
-	 * @param string $attributeValue The attribute value
-	 * @param unknown_type $trailId The trail id
-	 * @param unknown_type $accountId The account id of the user setting the attribute
-	 * @return int the attribute id
-	 */
-	private function setAttribute($attributeTypeId, $attributeValue, $forestId, $accountId)
-	{
-		$attribute = $this->getModel('Attribute_Model_Attribute')->get(
-				array('filterCollectionType' => 'forest',
-						'filterCollectionId' => $forestId,
-						'filterAttributeTypeId' => $attributeTypeId
-				));
-		if(count($attribute) == 0) {
-			$data = array(
-					'attribute_value' => $attributeValue,
-					'collection_type' => 'forest',
-					'collection_id' => $forestId,
-					'attribute_type_id' => $attributeTypeId,
-					'attribute_create_date' => time(),
-					'attribute_create_by' => $accountId);
-			$attributeId = $this->getModel('Attribute_Model_Attribute')->create($data);
-			return $attributeId;
-		} else {
-			$data = array('attribute_value' => $attributeValue);
-			$this->getModel('Attribute_Model_Attribute')->update($attribute[0]->attribute_id, $data);
-			return $attribute[0]->attribute_id;
-		}
-	}
-	
-	/**
-	 *
-	 * @param unknown_type $attributeId
-	 * @param unknown_type $trailId
-	 * @param unknown_type $default
-	 */
-	private function getAttribute($attributeId, $forestId, $default)
-	{
-		$attributeValue = $this->getModel('Attribute_Model_Attribute')->get(array(
-				'filterCollectionType' => 'forest',
-				'filterCollectionId' => $forestId,
-				'filterAttributeTypeId' => $attributeId
-		));
-		if(count($attributeValue) < 1) {
-			$attributeValue = $default;
-		} else {
-			$attributeValue = $attributeValue[0]->attribute_value;
-		}
-		return $attributeValue;
-	}
 }

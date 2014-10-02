@@ -1,0 +1,17 @@
+<hr />
+<h4>Browse Nearby</h4>
+<% if(completed.length == 0) { %>
+
+<% } else { %>
+<ul class="list-group">
+    <% nearby.forEach(function (model){ %>
+	<li class="list-group-item"><a href="#trails/<%= model.get('trail_slug') %>"><%= model.get('trail_name') %></a>
+		<span class="pull-right badge"><%= model.get('trail_dificulty') %> 
+		  <% if(model.get('trail_distance')) { %>
+		  <%= model.get('trail_distance')%> mi 
+		  <% }%>
+		  
+		</span></li>
+	<% }) %>
+</ul>
+<% } %>

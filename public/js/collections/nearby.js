@@ -1,9 +1,9 @@
 define([
 	"backbone", 
-	"models/completed"
-], function(Backbone, CompletedModel) {	
-	var CompletedCollection = Backbone.Collection.extend({	
-		model: CompletedModel,
+	"models/trail"
+], function(Backbone, TrailModel) {	
+	var NearbyCollection = Backbone.Collection.extend({	
+		model: TrailModel,
 		// init
 		initialize: function (options) {
 			this.options = options || {};		
@@ -29,8 +29,8 @@ define([
 			 statusText = options.xhr.statusText;
 	    },
 		url : function() {
-			return "/completed/index/";
+			return "/nearby/index";
 		},
 	});
-	return CompletedCollection;
+	return NearbyCollection;
 });

@@ -7,6 +7,8 @@ define([
   'collections/trail',
   'views/attribute/attributeGroupItem',
   'views/trails/review',
+  'views/trails/completed',
+  'views/trails/nearby',
   'text!templates/trails/view.html',
   'text!templates/trails/slider.html',
   'text!templates/trails/tabs.html',
@@ -14,7 +16,7 @@ define([
 ], function($, _, Backbone, Vm, 
 		AttributeModel,
 		TrailCollection,
-		ViewAttributeGroupItem, ReviewView,
+		ViewAttributeGroupItem, ReviewView, CompletedView, NearbyView,
 		ViewTrailTpl, 
 		TrailSliderTpl, TrailTabTpl, TrailModalTpl	){
   var ViewTrailView = Backbone.View.extend({
@@ -23,10 +25,13 @@ define([
     initialize: function (options) {
     	
     	this.options = options || {};
+    	this.options.account_email = localStorage.getItem('accountEmail');
+    	this.options.account_token = localStorage.getItem('accountToken');
     	
     	this.trails = new TrailCollection(this.options); 
     	this.listenTo(this.trails, 'add', this.render);
     	this.listenTo(this.trails, 'change', this.render);
+    	
 	    _.bindAll(this, 'render');
     },
     
@@ -103,6 +108,7 @@ define([
     
     showMarkTrailCompletedFrm: function (event) {
     	event.preventDefault();
+    	$("[data-toggle='date-picker']").datepicker({});
     	$('#markTrailCompletedModal').modal('toggle');
     },
     
@@ -250,12 +256,12 @@ define([
     		$(this.el).html(compiledTemplate);
     		document.title = "Trail: " + model.get('trail_name');
     		
-    		// reviews
+    		
     		review = new ReviewView({collection_type:'trail', collection_id:model.get('trail_id')});
-    		
-    		
+    		completed = new CompletedView({collection_type:'trail', collection_id:model.get('trail_id'), trailName:model.get('trail_name')});
+    		nearby = new NearbyView({collection_type:'trail', collection_id:model.get('trail_id'), section: 'trailNearbySection'});
     	} else {
-    		console.log('no trail found');
+    		
     	}
     },
     
